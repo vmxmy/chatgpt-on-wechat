@@ -309,9 +309,14 @@ class Godcmd(Plugin):
                         ok, result = False, "你没有设置私有GPT模型"
                 elif cmd == "reset":
                     if bottype in [const.OPEN_AI, const.CHATGPT, const.CHATGPTONAZURE, const.LINKAI, const.BAIDU, const.XUNFEI]:
-                        bot.sessions.clear_session(session_id)
-                        channel.cancel_session(session_id)
-                        ok, result = True, "会话已重置"
+                        if len(args) == 1:
+                            # user_data = conf().get_user_data(user)
+                            # user_data["gpt_model"] = args[0]
+                            ok, result = True, "你的GPT人格已设置为" + args[0]
+                        else: 
+                            bot.sessions.clear_session(session_id)
+                            channel.cancel_session(session_id)
+                            ok, result = True, "会话已重置"
                     else:
                         ok, result = False, "当前对话机器人不支持重置会话"
                 logger.debug("[Godcmd] command: %s by %s" % (cmd, user))
